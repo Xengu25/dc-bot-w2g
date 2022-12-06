@@ -16,20 +16,29 @@ class MyClient(discord.Client):
         if message.author.id == self.user.id:
             return
 
+
+
         if message.content.startswith('!help'):
             await message.reply('use google bro', mention_author=True)
 
         if message.content.startswith('!w2g'):
-            yt_link = "https://youtu.be/QO7e_RiMVQg"
+            yt_link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            print(f'{message.content}'[5:])
+            newLink = f'{message.content}'[5:]
+            if len(newLink) == 0:
+                print("no link")
+            else:
+                yt_link = newLink
             url = 'https://api.w2g.tv/rooms/create.json'
-            wkey = 'fj3378zier7jaovclqevkqv4qwkd4whykns2f2pg5awdqnuqyj4b74k7ocdmbs1p'
+            wkey = ''
+
             headers = {'Accept':'application/json','Content-Type':'application/json'}
-            data = {'w2g_api_key':wkey,'share':yt_link,'bg_color':'#00ff00','bg_opacity':"50"}
-            data = json.dumps(data)
-            headers = json.dumps(headers)
-            data = requests.post(url,headers,data).json()
+            data = {'w2g_api_key':wkey,'share':yt_link,'bg_color':'#133857','bg_opacity':"30"}
+
+            data = requests.post(url=url , headers=headers , params=data).json()
+            
             streamkey = data['streamkey']
-            embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0xFF5733)
+            embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
             await message.channel.send(embed=embed)
 
 
