@@ -1,7 +1,8 @@
 version: '3'
+
 services:
-  custom:
-    build:
+  w2gbot:
+    build: 
       context: .
       dockerfile: Dockerfile
     

@@ -5,7 +5,7 @@ import requests
 
 TOKEN = ''
 wkey = ''
-W2GKeys = {}
+
 class MyClient(discord.Client):
     
     
@@ -128,5 +128,3 @@ intents.message_content = True
 client = MyClient(intents=intents, command_prefix='!', description="W2G Create Room Bot")
 
 client.run(TOKEN)
-
-
