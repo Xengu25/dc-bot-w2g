@@ -3,10 +3,11 @@ import json
 import requests
 from discord import app_commands
 
+
 TOKEN = ''
 WKEY = ''
 
-W2GKeys = {}
+W2GKEYS = {}
 
 class client(discord.Client):
     def __init__(self):
@@ -21,8 +22,10 @@ class client(discord.Client):
             self.synced = True
         print(f"We have logged in as {self.user}.")
 
+
 bot = client()
 tree = app_commands.CommandTree(bot)
+
 
 @tree.command(name = 'w2link', description='Create W2G Room with preloaded Video')
 async def createRoom(interaction: discord.Interaction, link: str):
@@ -34,7 +37,7 @@ async def createRoom(interaction: discord.Interaction, link: str):
     streamkey = data['streamkey']
     embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
     embed.add_field(name="Roomkey: ", value=streamkey, inline=True)
-    W2GKeys[interaction.channel.id] = streamkey
+    W2GKEYS[interaction.channel.id] = streamkey
     await interaction.response.send_message(embed=embed)
 
 @tree.command(name = 'w2room', description='Create W2G Room')
@@ -47,15 +50,15 @@ async def createRoom(interaction: discord.Interaction):
     streamkey = data['streamkey']
     embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
     embed.add_field(name="Roomkey: ", value=streamkey, inline=True)
-    W2GKeys[interaction.channel.id] = streamkey
+    W2GKEYS[interaction.channel.id] = streamkey
     await interaction.response.send_message(embed=embed)
 
 @tree.command(name = 'w2add', description='Updates W2G Room')
 async def createRoom(interaction: discord.Interaction, link: str):
-    print(W2GKeys)
+    print(W2GKEYS)
     newLink = link
     try:
-        streamkey = W2GKeys[interaction.channel.id]
+        streamkey = W2GKEYS[interaction.channel.id]
         print(streamkey)
     except KeyError:
         error=discord.Embed(title="No room found",  url='https://dino.reuther05.de', color=0x133857)
