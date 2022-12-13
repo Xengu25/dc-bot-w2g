@@ -1,130 +1,83 @@
 import discord
 import json
 import requests
-
+from discord import app_commands
 
 TOKEN = ''
-wkey = ''
+WKEY = ''
 
-class MyClient(discord.Client):
-    
-    
+W2GKeys = {}
+
+class client(discord.Client):
+    def __init__(self):
+        super().__init__(intents=discord.Intents.default())
+        self.synced= False
+
     async def on_ready(self):
-        await client.change_presence(activity=discord.Game(name='!w2g'))
-        print(f'Logged on as {self.user}!')
-
-    async def on_message(self, message):
-        print(f'Message from {message.author}: {message.content}')
-        if message.author.id == self.user.id:
-            return
-
-
-
-        if message.content.startswith('!help'):
-           
-            embed=discord.Embed(title="Help",  url='https://dino.reuther05.de', color=0x133857)
-            embed.add_field(name="!w2g", value="creates Watch2Gether room", inline=False)
-            embed.add_field(name="!w2g <link>", value="creates Watch2Gether room with preloaded video", inline=False)
-            embed.add_field(name="!w2add <link>", value="instant playing a video in existing Watch2Gether room", inline=False)
-            await message.channel.send(embed=embed)
-
-        if message.content.startswith('!w2g'):
-            yt_link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            print(f'{message.content}'[5:])
-            newLink = f'{message.content}'[5:]
-            if len(newLink) == 0:
-                print("no link")
-            else:
-                yt_link = newLink
-            url = 'https://api.w2g.tv/rooms/create.json'
+        await self.wait_until_ready()
+        if not self.synced:
+            await tree.sync()
             
+            self.synced = True
+        print(f"We have logged in as {self.user}.")
 
-            headers = {'Accept':'application/json','Content-Type':'application/json'}
-            data = {'w2g_api_key':wkey,'share':yt_link,'bg_color':'#133857','bg_opacity':"100"}
-            data = requests.post(url=url , headers=headers , params=data).json()
-            
-            streamkey = data['streamkey']
-            embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
-            embed.add_field(name="Roomkey: ", value=streamkey, inline=True)
-            await message.channel.send(embed=embed)
-            print(message.channel)
-            W2GKeys[message.channel.id] = streamkey
-            print(W2GKeys)
+bot = client()
+tree = app_commands.CommandTree(bot)
 
-        if message.content.startswith('!w2add'):
-            print(W2GKeys)
-            yt_link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            print(f'{message.content}'[7:])
-            newLink = f'{message.content}'[7:]
-        
-            try:
-                streamkey = W2GKeys[message.channel.id]
-                print(streamkey)
-            except KeyError:
-                error=discord.Embed(title="No room found",  url='https://dino.reuther05.de', color=0x133857)
-                error.add_field(name="No room found in this channel: ", value="please use !w2g <link>", inline=False)
-                await message.channel.send(embed=error)
-                return 
+@tree.command(name = 'w2link', description='Create W2G Room with preloaded Video')
+async def createRoom(interaction: discord.Interaction, link: str):
+    yt_link = link
+    url = 'https://api.w2g.tv/rooms/create.json'
+    headers = {'Accept':'application/json','Content-Type':'application/json'}
+    data = {'w2g_api_key':WKEY,'share':yt_link,'bg_color':'#133857','bg_opacity':"100"}
+    data = requests.post(url=url , headers=headers , params=data).json()
+    streamkey = data['streamkey']
+    embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
+    embed.add_field(name="Roomkey: ", value=streamkey, inline=True)
+    W2GKeys[interaction.channel.id] = streamkey
+    await interaction.response.send_message(embed=embed)
 
-            if len(newLink) == 0:
-                error=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
-                error.add_field(name="No link found in command: ", value="please use !w2add <link>", inline=False)
-                await message.channel.send(embed=error)
-                return 
-            yt_link = newLink
+@tree.command(name = 'w2room', description='Create W2G Room')
+async def createRoom(interaction: discord.Interaction):
+    yt_link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    url = 'https://api.w2g.tv/rooms/create.json'
+    headers = {'Accept':'application/json','Content-Type':'application/json'}
+    data = {'w2g_api_key':WKEY,'share':yt_link,'bg_color':'#133857','bg_opacity':"100"}
+    data = requests.post(url=url , headers=headers , params=data).json()
+    streamkey = data['streamkey']
+    embed=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
+    embed.add_field(name="Roomkey: ", value=streamkey, inline=True)
+    W2GKeys[interaction.channel.id] = streamkey
+    await interaction.response.send_message(embed=embed)
 
-            url = 'https://api.w2g.tv/rooms/' + streamkey +'/sync_update'
+@tree.command(name = 'w2add', description='Updates W2G Room')
+async def createRoom(interaction: discord.Interaction, link: str):
+    print(W2GKeys)
+    newLink = link
+    try:
+        streamkey = W2GKeys[interaction.channel.id]
+        print(streamkey)
+    except KeyError:
+        error=discord.Embed(title="No room found",  url='https://dino.reuther05.de', color=0x133857)
+        error.add_field(name="No room found in this channel: ", value="please use !w2g <link>", inline=False)
+        await interaction.response.send_message(embed=error)
+        return 
+    if len(newLink) == 0:
+        error=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
+        error.add_field(name="No link found in command: ", value="please use !w2add <link>", inline=False)
+        await interaction.response.send_message(embed=error)
+        return 
+    yt_link = newLink
+    url = 'https://api.w2g.tv/rooms/' + streamkey +'/sync_update'
+    headers = {'Accept':'application/json','Content-Type':'application/json'}
+    data = {'w2g_api_key':WKEY,'item_url':yt_link}
+    try:
+        requests.post(url=url , headers=headers , params=data).json()
+    except:
+        print()
+    update=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
+    update.add_field(name="Room updated: ", value=streamkey, inline=False)
+    await interaction.response.send_message(embed=update)
 
-            headers = {'Accept':'application/json','Content-Type':'application/json'}
-            data = {'w2g_api_key':wkey,'item_url':yt_link}
 
-            try:
-                requests.post(url=url , headers=headers , params=data).json()
-            except:
-                print()
-            update=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
-            update.add_field(name="Room updated: ", value=streamkey, inline=False)
-            await message.channel.send(embed=update)
-
-
-        if message.content.startswith('!w2nxt'):
-            print(W2GKeys)
-            yt_link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            print(f'{message.content}'[7:])
-            newLink = f'{message.content}'[7:]
-        
-            try:
-                streamkey = W2GKeys[message.channel.id]
-                print(streamkey)
-            except KeyError:
-                error=discord.Embed(title="No room found",  url='https://dino.reuther05.de', color=0x133857)
-                error.add_field(name="No room found in this channel: ", value="please use !w2g <link>", inline=False)
-                await message.channel.send(embed=error)
-                return 
-
-            if len(newLink) == 0:
-                error=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
-                error.add_field(name="No link found in command: ", value="please use !w2add <link>", inline=False)
-                await message.channel.send(embed=error)
-                return 
-            yt_link = newLink
-
-            url = 'https://api.w2g.tv/rooms/' + streamkey +'/playlists/current/playlist_items/sync_update'
-
-            headers = {'Accept':'application/json','Content-Type':'application/json'}
-            items = [{yt_link: "added by " + str(message.author)}]
-            data = {'w2g_api_key':wkey, 'add_items': items}
-
-            
-            requests.post(url=url , headers=headers , params=data).json()
-            
-            update=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
-            update.add_field(name="Room updated: ", value=streamkey, inline=False)
-            await message.channel.send(embed=update)
-
-intents = discord.Intents.default()
-intents.message_content = True
-
-client = MyClient(intents=intents, command_prefix='!', description="W2G Create Room Bot")
-
-client.run(TOKEN)
+bot.run(TOKEN)
