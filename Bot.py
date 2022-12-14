@@ -1,6 +1,7 @@
 import discord
 import json
 import requests
+import os
 from discord import app_commands
 
 TOKEN = os.getenv('DCTOKEN')
