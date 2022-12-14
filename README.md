@@ -1,5 +1,5 @@
 _still in development_
-### Usage
+### use
 
 ```
 /w2room -- creates Watch2Gether room
@@ -10,3 +10,16 @@ _still in development_
 ```
 /w2add <link> -- instant playing a video in existing Watch2Gether room
 ```
+```
+/btc -- get current btc value
+```
+
+### build and run 
+
+```
+docker compose build
+```
+```
+docker compose up -d 
+```
+
