@@ -2,13 +2,9 @@ version: '3'
 
 services:
   xengu:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - W2GTOKEN=""
-      - DCTOKEN="" 
-      
-    
-      
-  
+      - W2GTOKEN=
+      - DCTOKEN=

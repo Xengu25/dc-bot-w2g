@@ -4,8 +4,8 @@ import requests
 import os
 from discord import app_commands
 
-TOKEN = os.getenv('DCTOKEN')
-WKEY = os.getenv('W2GTOKEN')
+TOKEN = os.environ['DCTOKEN']
+WKEY = os.environ['W2GTOKEN']
 W2GKEYS = {}
 
 class client(discord.Client):
