@@ -3,10 +3,8 @@ import json
 import requests
 from discord import app_commands
 
-
-TOKEN = ''
-WKEY = ''
-
+TOKEN = os.getenv('DCTOKEN')
+WKEY = os.getenv('W2GTOKEN')
 W2GKEYS = {}
 
 class client(discord.Client):
@@ -81,6 +79,15 @@ async def createRoom(interaction: discord.Interaction, link: str):
     update=discord.Embed(title="W2G Room Link",  url='https://w2g.tv/' + streamkey, color=0x133857)
     update.add_field(name="Room updated: ", value=streamkey, inline=False)
     await interaction.response.send_message(embed=update)
+
+@tree.command(name = 'btc', description='get current btc/eur value')
+async def getBTC(interaction: discord.Interaction):
+    url = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCEUR'
+    r = requests.get(url)
+    val = str(round(float(r.json().get('price')), 2))
+    embed=discord.Embed(title="BTC - EUR Kurs")
+    embed.add_field(name="Aktueller Preis", value=val + "€", inline=True)
+    await interaction.response.send_message(embed=embed)
 
 
 bot.run(TOKEN)
