@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - W2GTOKEN = ""
-      - DCTOKEN = "" 
+      - W2GTOKEN=""
+      - DCTOKEN="" 
       
     
       
