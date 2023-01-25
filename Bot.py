@@ -96,7 +96,7 @@ async def getmeme(interaction: discord.Interaction):
     r = requests.get(url)
     val = str(r.json().get('url'))
     embed=discord.Embed(title="random meme")
-    embed.set_Image(url=val)
+    embed.set_image(url=val)
     await interaction.response.send_message(embed=embed)
 
 
