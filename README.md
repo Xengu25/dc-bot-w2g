@@ -13,6 +13,9 @@ _still in development_
 ```
 /btc -- get current btc value
 ```
+```
+/meme -- get random meme
+```
 
 ### build and run 
 
