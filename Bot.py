@@ -93,10 +93,10 @@ async def getBTC(interaction: discord.Interaction):
 @tree.command(name = 'meme', description='get random meme')
 async def getmeme(interaction: discord.Interaction):
     url = 'https://meme-api.com/gimme'
-    r = requests.get(url)
+    r = requests.get(urlp)
     val = str(r.json().get('url'))
     embed=discord.Embed(title="random meme")
-    embed.add_field(name="Meme", value=val, inline=True)
+    embed.set_Image(url=urlp)
     await interaction.response.send_message(embed=embed)
 
 
