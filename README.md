@@ -17,6 +17,9 @@ _still in development_
 /meme -- get random meme
 ```
 ```
+/meme -- get random meme
+```
+```
 /cat -- get random cat image
 ```
 
