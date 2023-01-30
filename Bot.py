@@ -105,7 +105,7 @@ async def getmeme(interaction: discord.Interaction):
     r = requests.get(url)
     val = str(r.json().get('url'))
     embed=discord.Embed(title="Cat")
-    embed.add_field(name="Cat", value=val, inline=True)
+    embed.set_image(url=val)
     await interaction.response.send_message(embed=embed)
 
 
