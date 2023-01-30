@@ -99,7 +99,14 @@ async def getmeme(interaction: discord.Interaction):
     embed.add_field(name="Meme", value=val, inline=True)
     await interaction.response.send_message(embed=embed)
 
-
+@tree.command(name = 'cat', description='get random cat image')
+async def getmeme(interaction: discord.Interaction):
+    url = 'https://api.thecatapi.com/v1/images/search'
+    r = requests.get(url)
+    val = str(r.json().get('url'))
+    embed=discord.Embed(title="Cat")
+    embed.add_field(name="Cat", value=val, inline=True)
+    await interaction.response.send_message(embed=embed)
 
 
 bot.run(TOKEN)

@@ -13,6 +13,13 @@ _still in development_
 ```
 /btc -- get current btc value
 ```
+```
+/meme -- get random meme
+```
+```
+/cat -- get random cat image
+```
+
 
 ### build and run 
 
