@@ -103,7 +103,7 @@ async def getmeme(interaction: discord.Interaction):
 async def getmeme(interaction: discord.Interaction):
     url = 'https://api.thecatapi.com/v1/images/search'
     r = requests.get(url)
-    val = str(r.json().get('url'))
+    val = str(r.json()[0].get('url'))
     embed=discord.Embed(title="Cat")
     embed.set_image(url=val)
     await interaction.response.send_message(embed=embed)
