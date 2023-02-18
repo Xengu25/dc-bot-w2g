@@ -83,7 +83,7 @@ async def createRoom(interaction: discord.Interaction, link: str):
 
 @tree.command(name = 'btc', description='get current btc/eur value')
 async def getBTC(interaction: discord.Interaction):
-    url = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSD'
+    url = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'
     r = requests.get(url)
     val = str(round(float(r.json().get('price')), 2))
     embed=discord.Embed(title="BTC - EUR Kurs")
