@@ -112,7 +112,7 @@ async def getmeme(interaction: discord.Interaction):
 async def getmeme(interaction: discord.Interaction):
     url = 'https://dog.ceo/api/breeds/image/random'
     r = requests.get(url)
-    val = str(r.json()[0].get('message'))
+    val = str(r.json().get('message'))
     embed=discord.Embed(title="Dog")
     embed.set_image(url=val)
     await interaction.response.send_message(embed=embed)
