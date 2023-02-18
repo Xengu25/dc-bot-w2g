@@ -87,7 +87,7 @@ async def getBTC(interaction: discord.Interaction):
     r = requests.get(url)
     val = str(round(float(r.json().get('price')), 2))
     embed=discord.Embed(title="BTC - USD Kurs")
-    embed.add_field(name="Aktueller Preis", value="$" + val, inline=True)
+    embed.add_field(name="current value", value="$" + val, inline=True)
     await interaction.response.send_message(embed=embed)
 
 @tree.command(name = 'meme', description='get random meme')
