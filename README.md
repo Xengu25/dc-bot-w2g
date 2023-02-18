@@ -19,6 +19,9 @@ _still in development_
 ```
 /cat -- get random cat image
 ```
+```
+/dog -- get random dog image
+```
 
 
 ### build and run 
